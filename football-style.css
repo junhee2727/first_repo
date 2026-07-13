@@ -1,0 +1,374 @@
+/* ==========================================================
+   football.html 전용 스타일
+   - :root 색상 변수는 nav-component의 <style>에서 이미 정의됨
+     (--color-bg-primary, --color-text-primary, --color-accent 등)
+   - 여기서는 기존 변수를 재사용하고, 새로 필요한 색상만
+     동일한 네이밍 규칙으로 :root에 추가함 (하드코딩 금지)
+   ========================================================== */
+
+:root {
+  /* 카드 표면 색상 — 배경보다 한 단계 밝은 표면 톤 (기존 팔레트 확장) */
+  --color-surface: rgba(255, 255, 255, 0.03);
+  --color-surface-strong: rgba(0, 0, 0, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Pretendard', sans-serif;
+  overflow-x: hidden;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================
+   배경 오디오 비주얼라이저 캔버스
+   ========================================================== */
+.bg-visualizer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.2;
+}
+
+/* ==========================================================
+   섹션 공통
+   ========================================================== */
+.football-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--nav-height) + 40px) 24px 40px;
+  border-top: 1px solid var(--color-border);
+  box-sizing: border-box;
+}
+
+.football-container {
+  max-width: 1152px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.football-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.section-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0 0 16px;
+}
+
+.section-title {
+  font-size: clamp(28px, 4.5vw, 44px);
+  font-weight: 900;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+  margin: 0 0 20px;
+}
+
+.section-text {
+  font-size: clamp(14px, 1.6vw, 16px);
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  margin: 0 0 20px;
+}
+
+.section-divider {
+  width: 80px;
+  height: 4px;
+  border-radius: 4px;
+  background-color: var(--color-text-primary);
+}
+
+.football-intro {
+  align-self: center;
+}
+
+.football-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ==========================================================
+   카드 공통
+   ========================================================== */
+.card {
+  position: relative;
+  padding: 32px;
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-elevated);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.card-body {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  margin: 0 0 24px;
+}
+
+.highlight {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--color-border-strong);
+}
+
+.eyebrow-mono {
+  display: block;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-bottom: 2px;
+}
+
+/* ==========================================================
+   뉴캐슬 오마주 카드 (인터랙티브)
+   ========================================================== */
+.card-nufc {
+  cursor: pointer;
+}
+
+.card-nufc:hover,
+.card-nufc:focus-visible {
+  border-color: var(--color-border-strong);
+  transform: scale(1.005);
+  outline: none;
+}
+
+.card-nufc:active {
+  transform: scale(0.995);
+}
+
+.card-glow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  filter: blur(48px);
+  pointer-events: none;
+}
+
+.card-nufc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.card-nufc-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.kit-stripes {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  padding: 6px;
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+}
+
+.kit-stripes span {
+  width: 6px;
+  height: 20px;
+  background-color: var(--color-text-primary);
+}
+
+.kit-stripes span:nth-child(2) {
+  background-color: var(--color-bg-primary);
+  border-left: 1px solid var(--color-border-strong);
+  border-right: 1px solid var(--color-border-strong);
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.click-badge {
+  flex-shrink: 0;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background-color: var(--color-accent-dim);
+  color: var(--color-accent);
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.card-nufc:hover .click-badge {
+  background-color: var(--color-accent);
+  color: var(--color-bg-primary);
+}
+
+.card-hint {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.card-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.stat-label {
+  display: block;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  display: block;
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+/* ==========================================================
+   브루누 기마랑이스 헌정 카드
+   ========================================================== */
+.card-bruno {
+  background: linear-gradient(135deg, var(--color-surface-strong), var(--color-bg-elevated));
+}
+
+.card-bruno-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.jersey-number {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background-color: var(--color-text-primary);
+  color: var(--color-bg-primary);
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.card-bruno-name {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--color-text-primary);
+  margin: 0 0 12px;
+}
+
+.card-bruno-name-en {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+.jersey-icon {
+  flex-shrink: 0;
+  width: 96px;
+  height: 112px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 10px;
+}
+
+.jersey-stripes {
+  display: flex;
+  justify-content: space-around;
+}
+
+.jersey-stripes span {
+  width: 12px;
+  height: 48px;
+  background-color: var(--color-text-primary);
+}
+
+.jersey-stripes span:nth-child(2) {
+  background-color: var(--color-bg-primary);
+  border-left: 1px solid var(--color-border-strong);
+  border-right: 1px solid var(--color-border-strong);
+}
+
+.jersey-label {
+  text-align: center;
+}
+
+.jersey-name {
+  display: block;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 10px;
+  color: var(--color-text-secondary);
+}
+
+.jersey-num {
+  display: block;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--color-text-primary);
+}
+
+/* ==========================================================
+   반응형
+   ========================================================== */
+@media (min-width: 1024px) {
+  .football-grid {
+    grid-template-columns: 5fr 7fr;
+    gap: 64px;
+  }
+
+  .card-bruno-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

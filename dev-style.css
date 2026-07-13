@@ -1,0 +1,278 @@
+/* ==========================================================
+   dev.html 전용 스타일
+   - :root 색상 변수는 nav-component의 <style>에서 이미 정의됨
+     (--color-bg-primary, --color-text-primary, --color-accent 등)
+   - 여기서는 기존 변수를 재사용하고, 새로 필요한 색상만
+     동일한 네이밍 규칙으로 :root에 추가함 (하드코딩 금지)
+   ========================================================== */
+
+:root {
+  /* 카드 표면 색상 (football-style.css / music-style.css와 동일한 네이밍 규칙 확장) */
+  --color-surface: rgba(255, 255, 255, 0.03);
+  --color-surface-strong: rgba(0, 0, 0, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Pretendard', sans-serif;
+  overflow-x: hidden;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================
+   배경 오디오 비주얼라이저 캔버스
+   ========================================================== */
+.bg-visualizer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.2;
+}
+
+/* ==========================================================
+   섹션 — 화면 세로 중앙 정렬
+   ========================================================== */
+.dev-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--nav-height) + 40px) 24px 40px;
+  border-top: 1px solid var(--color-border);
+  box-sizing: border-box;
+}
+
+.dev-container {
+  max-width: 1152px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.section-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0 0 16px;
+}
+
+.section-title {
+  font-size: clamp(28px, 4.5vw, 44px);
+  font-weight: 900;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+  margin: 0 0 20px;
+}
+
+.section-text {
+  max-width: 720px;
+  font-size: clamp(14px, 1.6vw, 16px);
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.dev-intro {
+  max-width: 720px;
+}
+
+/* ==========================================================
+   핵심 역량 카드 3개
+   ========================================================== */
+.strength-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.strength-card {
+  padding: 32px;
+  border-radius: 20px;
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  transition: border-color var(--transition-fast);
+}
+
+.strength-card:hover {
+  border-color: var(--color-border-strong);
+}
+
+.strength-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background-color: var(--color-text-primary);
+  color: var(--color-bg-primary);
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 16px;
+}
+
+.strength-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 12px;
+}
+
+.strength-text {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ==========================================================
+   졸업 작품 쇼케이스 카드
+   ========================================================== */
+.showcase-card {
+  position: relative;
+  padding: 40px 32px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--color-bg-elevated), var(--color-bg-primary) 50%, var(--color-bg-elevated));
+  border: 1px solid var(--color-border);
+}
+
+.showcase-glow {
+  position: absolute;
+  right: -80px;
+  bottom: -80px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  filter: blur(64px);
+  pointer-events: none;
+}
+
+.showcase-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.showcase-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-primary);
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.showcase-title {
+  font-size: clamp(22px, 3.5vw, 34px);
+  font-weight: 900;
+  color: var(--color-text-primary);
+  margin: 0 0 16px;
+}
+
+.showcase-text {
+  font-size: clamp(13px, 1.6vw, 15px);
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  margin: 0 0 20px;
+}
+
+.stack-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.stack-tag {
+  padding: 5px 10px;
+  border-radius: 6px;
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 12px;
+}
+
+.stack-tag--solid {
+  background-color: var(--color-text-primary);
+  color: var(--color-bg-primary);
+  font-weight: 700;
+}
+
+.showcase-award {
+  display: flex;
+  justify-content: center;
+}
+
+.award-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 192px;
+  padding: 24px;
+  text-align: center;
+  border-radius: 16px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.award-emoji {
+  font-size: 36px;
+}
+
+.award-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.award-subtitle {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* ==========================================================
+   반응형
+   ========================================================== */
+@media (min-width: 768px) {
+  .strength-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .showcase-grid {
+    grid-template-columns: 8fr 4fr;
+  }
+
+  .showcase-award {
+    justify-content: flex-end;
+  }
+}

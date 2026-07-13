@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I AM | 이준희 — Music Digging</title>
+
+<!-- ==========================================================
+     네비게이션 바 스타일 (nav-component.html 원본 그대로, 수정 금지)
+     ========================================================== -->
+<style>
+:root {
+  --color-bg-primary: #0d0d0d;
+  --color-bg-secondary: #141414;
+  --color-bg-elevated: #1a1a1a;
+
+  --color-text-primary: #f5f5f5;
+  --color-text-secondary: #a3a3a3;
+  --color-text-muted: #6b6b6b;
+
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-strong: rgba(255, 255, 255, 0.25);
+
+  /* 뉴캐슬 스카이블루 포인트 컬러 */
+  --color-accent: #7fdbff;
+  --color-accent-dim: rgba(127, 219, 255, 0.15);
+
+  --nav-height: 76px;
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--nav-height);
+  z-index: 1000;
+  background-color: rgba(13, 13, 13, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav-container {
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: var(--color-text-primary);
+  transition: opacity var(--transition-fast);
+}
+
+.brand:hover { opacity: 0.8; }
+
+.brand-text {
+  padding: 4px 8px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 4px;
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  position: relative;
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 2px;
+  height: 2px;
+  background-color: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--transition-fast);
+}
+
+.nav-link:hover { color: var(--color-text-primary); }
+.nav-link:hover::after { transform: scaleX(1); }
+
+.nav-link.is-active { color: var(--color-accent); }
+.nav-link.is-active::after { transform: scaleX(1); }
+
+.nav-link--cta {
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-strong);
+  margin-left: 8px;
+}
+.nav-link--cta::after { display: none; }
+.nav-link--cta:hover {
+  background-color: var(--color-text-primary);
+  color: var(--color-bg-primary);
+  border-color: var(--color-text-primary);
+}
+.nav-link--cta.is-active {
+  background-color: var(--color-accent);
+  color: var(--color-bg-primary);
+  border-color: var(--color-accent);
+}
+
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hamburger-line {
+  width: 22px;
+  height: 2px;
+  background-color: var(--color-text-primary);
+  border-radius: 2px;
+  transition: transform var(--transition-medium), opacity var(--transition-medium);
+}
+
+.hamburger-btn.is-open .hamburger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger-btn.is-open .hamburger-line:nth-child(2) { opacity: 0; }
+.hamburger-btn.is-open .hamburger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 768px) {
+  .hamburger-btn { display: flex; }
+
+  .main-nav {
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    width: 100%;
+    background-color: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height var(--transition-medium);
+  }
+
+  .main-nav.is-open { max-height: 400px; }
+
+  .nav-list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px 16px 20px;
+  }
+
+  .nav-link {
+    display: block;
+    width: 100%;
+    padding: 14px 12px;
+    border-radius: 8px;
+  }
+
+  .nav-link::after { display: none; }
+  .nav-link.is-active { background-color: var(--color-accent-dim); }
+
+  .nav-link--cta { margin-left: 0; margin-top: 8px; text-align: center; }
+}
+</style>
+
+<!-- 뮤직 페이지 전용 스타일 -->
+<link rel="stylesheet" href="music-style.css">
+</head>
+<body>
+
+<!-- ==========================================================
+     네비게이션 바 마크업 (nav-component.html 원본 그대로, 수정 금지)
+     - 현재 페이지 표시를 위해 Music Digging 링크에만 is-active 클래스 부여
+     ========================================================== -->
+<header class="site-header">
+  <div class="nav-container">
+
+    <a href="landing.html" class="brand" aria-label="I AM 홈으로 이동">
+      <span class="brand-text">I AM</span>
+    </a>
+
+    <nav class="main-nav" id="main-nav" aria-label="주요 메뉴">
+      <ul class="nav-list" id="nav-list">
+        <li><a href="football.html" class="nav-link">Football</a></li>
+        <li><a href="music.html" class="nav-link is-active">Music Digging</a></li>
+        <li><a href="dev.html" class="nav-link">Dev Capability</a></li>
+        <li><a href="contact.html" class="nav-link nav-link--cta">Contact</a></li>
+      </ul>
+    </nav>
+
+    <button
+      type="button"
+      class="hamburger-btn"
+      id="hamburger-btn"
+      aria-label="메뉴 열기"
+      aria-expanded="false"
+      aria-controls="nav-list"
+    >
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+
+  </div>
+</header>
+
+<!-- ==========================================================
+     뮤직 본문 — vibe_surfer_portfolio.html의 음악 섹션(#music) 이식
+     ========================================================== -->
+<canvas id="visualizer-canvas" class="bg-visualizer" aria-hidden="true"></canvas>
+
+<main>
+  <section class="music-section">
+    <div class="music-container">
+      <div class="music-grid">
+
+        <!-- 왼쪽 바이닐 플레이어 영역 -->
+        <div class="music-player-wrap">
+          <div class="player">
+            <div class="player-overlay" aria-hidden="true"></div>
+
+            <div class="player-top">
+              <span class="eyebrow-mono">NOW DIGGING</span>
+              <span class="live-dot" aria-hidden="true"></span>
+            </div>
+
+            <!-- 회전하는 바이닐 레코드 -->
+            <div class="vinyl-stage">
+              <div id="vinyl" class="vinyl paused">
+                <div class="vinyl-groove vinyl-groove--1"></div>
+                <div class="vinyl-groove vinyl-groove--2"></div>
+                <div class="vinyl-groove vinyl-groove--3"></div>
+                <div class="vinyl-label">VIBE SURFER</div>
+              </div>
+              <!-- 톤암 (턴테이블 바늘) -->
+              <div id="tonearm" class="tonearm" aria-hidden="true">
+                <svg viewBox="0 0 100 150" fill="none" width="100%" height="100%">
+                  <path d="M10,10 L40,10 L60,80 L55,100" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                  <rect x="48" y="98" width="14" height="20" rx="2" fill="#E5E7EB" transform="rotate(-10 55 100)"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="player-bottom">
+              <div class="player-track-info">
+                <h4 class="track-title">Brain Rot &amp; House K-Pop</h4>
+                <p class="track-subtitle">Curated Rhythm Wave</p>
+              </div>
+              <button
+                type="button"
+                id="vinyl-toggle"
+                class="player-toggle"
+                aria-label="바이닐 재생"
+                aria-pressed="false"
+              >
+                <svg id="play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                <svg id="pause-icon" class="is-hidden" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 오른쪽 음악 취향 본문 영역 -->
+        <div class="music-copy">
+          <p class="section-eyebrow">02 / MUSIC &amp; PREFERENCE</p>
+          <h2 class="section-title">장르의 한계 없이,<br>본능적으로 디깅하는 리스너</h2>
+          <p class="section-text">
+            특정 장르에 스스로를 가두지 않습니다. 중독성 강한 가사와 미니멀한 비트의
+            <strong class="highlight">"Brain rot"</strong> 트렌디한 밈송으로 귀를 트고, 그
+            이면에 흐르는 묵직한 하우스풍 K-POP에 빠져들어 직접 하우스 음악의 역사와
+            세부 서브 장르까지 딥 다이브(Deep-dive)합니다.
+          </p>
+          <blockquote class="music-quote">
+            "익숙하지 않은 파도라도 매력적이라면 기꺼이 뛰어듭니다. 호기심을 지적
+            깊이로 확장해 나가는 것이 저의 디깅 스타일입니다."
+          </blockquote>
+          <div class="tag-list">
+            <span class="tag">#BrainRot</span>
+            <span class="tag">#DeepHouse</span>
+            <span class="tag">#KPopDigging</span>
+            <span class="tag">#VibeSurfing</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ==========================================================
+     네비게이션 바 스크립트 (nav-component.html 원본 그대로, 수정 금지)
+     ========================================================== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const mainNav = document.getElementById('main-nav');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  /* ----------------------------------------------------------
+     1. 햄버거 메뉴 열기/닫기
+     ---------------------------------------------------------- */
+  function openMenu() {
+    mainNav.classList.add('is-open');
+    hamburgerBtn.classList.add('is-open');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    hamburgerBtn.setAttribute('aria-label', '메뉴 닫기');
+  }
+
+  function closeMenu() {
+    mainNav.classList.remove('is-open');
+    hamburgerBtn.classList.remove('is-open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    hamburgerBtn.setAttribute('aria-label', '메뉴 열기');
+  }
+
+  hamburgerBtn.addEventListener('click', () => {
+    mainNav.classList.contains('is-open') ? closeMenu() : openMenu();
+  });
+
+  navLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      if (mainNav.classList.contains('is-open')) closeMenu();
+    });
+  });
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (window.innerWidth > 768) closeMenu();
+    }, 150);
+  });
+
+  /* ----------------------------------------------------------
+     2. 현재 페이지 파일명을 기준으로 is-active 자동 부여
+        (각 페이지에서 별도 설정 없이 동작)
+     ---------------------------------------------------------- */
+  const currentFile = window.location.pathname.split('/').pop() || 'index.html';
+
+  navLinks.forEach((link) => {
+    const linkFile = link.getAttribute('href');
+    if (linkFile === currentFile) {
+      link.classList.add('is-active');
+    }
+  });
+});
+</script>
+
+<!-- 뮤직 페이지 전용 스크립트 -->
+<script src="music-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+/* ==========================================================
+   music.html 전용 스타일
+   - :root 색상 변수는 nav-component의 <style>에서 이미 정의됨
+     (--color-bg-primary, --color-text-primary, --color-accent 등)
+   - 여기서는 기존 변수를 재사용하고, 새로 필요한 색상만
+     동일한 네이밍 규칙으로 :root에 추가함 (하드코딩 금지)
+   ========================================================== */
+
+:root {
+  /* 카드 표면 색상 (football-style.css와 동일한 네이밍 규칙 확장) */
+  --color-surface: rgba(255, 255, 255, 0.03);
+
+  /* "NOW DIGGING" 라이브 표시용 레드 톤 — 기존 팔레트에 없어 추가 */
+  --color-live-red: #f87171;
+  --color-live-red-dim: rgba(248, 113, 113, 0.4);
+
+  /* 바이닐 레코드 그루브(홈) 표현용 그레이스케일 톤 */
+  --color-vinyl-base: #0a0a0a;
+  --color-vinyl-groove: #1c1c1c;
+  --color-vinyl-groove-soft: #171717;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Pretendard', sans-serif;
+  overflow-x: hidden;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================
+   배경 오디오 비주얼라이저 캔버스
+   ========================================================== */
+.bg-visualizer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.2;
+}
+
+/* ==========================================================
+   섹션 — 화면 세로 중앙 정렬
+   ========================================================== */
+.music-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--nav-height) + 40px) 24px 40px;
+  border-top: 1px solid var(--color-border);
+  box-sizing: border-box;
+}
+
+.music-container {
+  max-width: 1152px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.music-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.section-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0 0 16px;
+}
+
+.section-title {
+  font-size: clamp(28px, 4.5vw, 44px);
+  font-weight: 900;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+  margin: 0 0 20px;
+}
+
+.section-text {
+  font-size: clamp(14px, 1.6vw, 16px);
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  margin: 0 0 20px;
+}
+
+.highlight {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.eyebrow-mono {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================
+   왼쪽: 바이닐 플레이어
+   ========================================================== */
+.music-player-wrap {
+  display: flex;
+  justify-content: center;
+  order: 2;
+}
+
+.player {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+}
+
+.player-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), var(--color-surface));
+  pointer-events: none;
+}
+
+.player-top,
+.player-bottom {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.player-bottom {
+  align-items: flex-end;
+}
+
+.live-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--color-live-red);
+  animation: live-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* 회전하는 바이닐 */
+.vinyl-stage {
+  position: relative;
+  z-index: 1;
+  width: 176px;
+  height: 176px;
+  margin: 16px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vinyl {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-color: var(--color-vinyl-base);
+  border: 4px solid #262626;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: vinyl-spin 12s linear infinite;
+}
+
+.vinyl.paused {
+  animation-play-state: paused;
+}
+
+@keyframes vinyl-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.vinyl-groove {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--color-vinyl-groove);
+}
+
+.vinyl-groove--1 { inset: 8px; border-color: var(--color-vinyl-groove); }
+.vinyl-groove--2 { inset: 24px; border-color: var(--color-vinyl-groove-soft); }
+.vinyl-groove--3 { inset: 40px; border-color: rgba(23, 23, 23, 0.6); }
+
+.vinyl-label {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: var(--color-text-primary);
+  color: var(--color-bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+/* 톤암 */
+.tonearm {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 64px;
+  height: 96px;
+  color: var(--color-text-secondary);
+  transform-origin: top left;
+  transform: rotate(15deg);
+  transition: transform var(--transition-medium);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tonearm.is-playing {
+  transform: rotate(27deg);
+}
+
+/* 트랙 정보 + 재생 버튼 */
+.track-title {
+  margin: 0 0 2px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: 0.01em;
+}
+
+.track-subtitle {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.player-toggle {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--color-text-primary);
+  color: var(--color-bg-primary);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.player-toggle:hover {
+  background-color: var(--color-accent);
+}
+
+.is-hidden {
+  display: none;
+}
+
+/* ==========================================================
+   오른쪽: 취향 소개 카피
+   ========================================================== */
+.music-copy {
+  order: 1;
+}
+
+.music-quote {
+  margin: 0 0 20px;
+  padding-left: 16px;
+  border-left: 2px solid var(--color-text-primary);
+  color: var(--color-text-secondary);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================
+   반응형
+   ========================================================== */
+@media (min-width: 1024px) {
+  .music-grid {
+    grid-template-columns: 6fr 6fr;
+    gap: 64px;
+  }
+
+  .music-player-wrap {
+    order: 1;
+  }
+
+  .music-copy {
+    order: 2;
+  }
+}

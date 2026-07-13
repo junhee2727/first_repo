@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I AM | 이준희 — Dev Capability</title>
+
+<!-- ==========================================================
+     네비게이션 바 스타일 (nav-component.html 원본 그대로, 수정 금지)
+     ========================================================== -->
+<style>
+:root {
+  --color-bg-primary: #0d0d0d;
+  --color-bg-secondary: #141414;
+  --color-bg-elevated: #1a1a1a;
+
+  --color-text-primary: #f5f5f5;
+  --color-text-secondary: #a3a3a3;
+  --color-text-muted: #6b6b6b;
+
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-strong: rgba(255, 255, 255, 0.25);
+
+  /* 뉴캐슬 스카이블루 포인트 컬러 */
+  --color-accent: #7fdbff;
+  --color-accent-dim: rgba(127, 219, 255, 0.15);
+
+  --nav-height: 76px;
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--nav-height);
+  z-index: 1000;
+  background-color: rgba(13, 13, 13, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav-container {
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: var(--color-text-primary);
+  transition: opacity var(--transition-fast);
+}
+
+.brand:hover { opacity: 0.8; }
+
+.brand-text {
+  padding: 4px 8px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 4px;
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  position: relative;
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 2px;
+  height: 2px;
+  background-color: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--transition-fast);
+}
+
+.nav-link:hover { color: var(--color-text-primary); }
+.nav-link:hover::after { transform: scaleX(1); }
+
+.nav-link.is-active { color: var(--color-accent); }
+.nav-link.is-active::after { transform: scaleX(1); }
+
+.nav-link--cta {
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-strong);
+  margin-left: 8px;
+}
+.nav-link--cta::after { display: none; }
+.nav-link--cta:hover {
+  background-color: var(--color-text-primary);
+  color: var(--color-bg-primary);
+  border-color: var(--color-text-primary);
+}
+.nav-link--cta.is-active {
+  background-color: var(--color-accent);
+  color: var(--color-bg-primary);
+  border-color: var(--color-accent);
+}
+
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hamburger-line {
+  width: 22px;
+  height: 2px;
+  background-color: var(--color-text-primary);
+  border-radius: 2px;
+  transition: transform var(--transition-medium), opacity var(--transition-medium);
+}
+
+.hamburger-btn.is-open .hamburger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger-btn.is-open .hamburger-line:nth-child(2) { opacity: 0; }
+.hamburger-btn.is-open .hamburger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 768px) {
+  .hamburger-btn { display: flex; }
+
+  .main-nav {
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    width: 100%;
+    background-color: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height var(--transition-medium);
+  }
+
+  .main-nav.is-open { max-height: 400px; }
+
+  .nav-list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px 16px 20px;
+  }
+
+  .nav-link {
+    display: block;
+    width: 100%;
+    padding: 14px 12px;
+    border-radius: 8px;
+  }
+
+  .nav-link::after { display: none; }
+  .nav-link.is-active { background-color: var(--color-accent-dim); }
+
+  .nav-link--cta { margin-left: 0; margin-top: 8px; text-align: center; }
+}
+</style>
+
+<!-- 개발 역량 페이지 전용 스타일 -->
+<link rel="stylesheet" href="dev-style.css">
+</head>
+<body>
+
+<!-- ==========================================================
+     네비게이션 바 마크업 (nav-component.html 원본 그대로, 수정 금지)
+     - 현재 페이지 표시를 위해 Dev Capability 링크에만 is-active 클래스 부여
+     ========================================================== -->
+<header class="site-header">
+  <div class="nav-container">
+
+    <a href="landing.html" class="brand" aria-label="I AM 홈으로 이동">
+      <span class="brand-text">I AM</span>
+    </a>
+
+    <nav class="main-nav" id="main-nav" aria-label="주요 메뉴">
+      <ul class="nav-list" id="nav-list">
+        <li><a href="football.html" class="nav-link">Football</a></li>
+        <li><a href="music.html" class="nav-link">Music Digging</a></li>
+        <li><a href="dev.html" class="nav-link is-active">Dev Capability</a></li>
+        <li><a href="contact.html" class="nav-link nav-link--cta">Contact</a></li>
+      </ul>
+    </nav>
+
+    <button
+      type="button"
+      class="hamburger-btn"
+      id="hamburger-btn"
+      aria-label="메뉴 열기"
+      aria-expanded="false"
+      aria-controls="nav-list"
+    >
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+
+  </div>
+</header>
+
+<!-- ==========================================================
+     개발 역량 본문 — vibe_surfer_portfolio.html의 #strength 섹션 이식
+     ========================================================== -->
+<canvas id="visualizer-canvas" class="bg-visualizer" aria-hidden="true"></canvas>
+
+<main>
+  <section class="dev-section">
+    <div class="dev-container">
+
+      <div class="dev-intro">
+        <p class="section-eyebrow">03 / CAPABILITY &amp; STRENGTHS</p>
+        <h2 class="section-title">리액트 입문과 동시에 입상,<br>폭발적인 학습과 적용력</h2>
+        <p class="section-text">
+          단순히 지식을 암기하는 것에 머무르지 않고 목적 중심의 빠른 응용과 설계 능력을
+          추구합니다. 졸업 작품 제작 과정에서 React를 처음 맞닥뜨렸지만, 탄탄한 웹 기초
+          체력과 기획 해석력으로 단기간에 완성도 높은 프로덕트를 개발해 입상까지
+          완수했습니다.
+        </p>
+      </div>
+
+      <!-- 핵심 역량 카드 리스트 -->
+      <div class="strength-grid">
+        <div class="strength-card">
+          <div class="strength-number">01</div>
+          <h3 class="strength-title">압도적인 러닝 커브 (React)</h3>
+          <p class="strength-text">
+            공식 문서 기반의 깊이 있는 학습법과 트러블슈팅 습관으로, 리액트 핵심
+            아키텍처(Hooks, State Flow)를 단시간 내에 흡수하고 실전에 성공적으로
+            녹였습니다.
+          </p>
+        </div>
+
+        <div class="strength-card">
+          <div class="strength-number">02</div>
+          <h3 class="strength-title">트렌드를 읽는 디깅력</h3>
+          <p class="strength-text">
+            음악 취향 탐색에서 입증된 집요함으로 오픈소스 동향과 최신 기술 블로그를
+            분석하고, 실무에 가장 효율적인 도구와 구조를 선택하고 제안합니다.
+          </p>
+        </div>
+
+        <div class="strength-card">
+          <div class="strength-number">03</div>
+          <h3 class="strength-title">투지 있는 빌드업과 압박</h3>
+          <p class="strength-text">
+            뉴캐슬 유나이티드처럼, 한정된 자원과 시간 속에서도 타협 없는 높은 완성도와
+            철저한 디버깅을 실행해 안정적이고 고성능의 코드를 만들어냅니다.
+          </p>
+        </div>
+      </div>
+
+      <!-- 졸업 작품 입상 쇼케이스 카드 -->
+      <div class="showcase-card">
+        <div class="showcase-glow" aria-hidden="true"></div>
+
+        <div class="showcase-grid">
+          <div class="showcase-main">
+            <div class="showcase-badge">🏆 GRADUATION WORK AWARD</div>
+            <h3 class="showcase-title">졸업 작품 리액트 개발 및 입상</h3>
+            <p class="showcase-text">
+              "프로젝트의 성공을 위해 낯선 파도에 과감하게 올라탔습니다." 기획 단계에서
+              필요성이 대두된 단일 페이지 애플리케이션(SPA) 아키텍처를 구현하기 위해
+              React를 주도적으로 도입, 독학하여 성공적으로 프로젝트를 리딩하고 우수한
+              성과로 입상하는 쾌거를 이루었습니다.
+            </p>
+            <div class="stack-tags">
+              <span class="stack-tag stack-tag--solid">React.js</span>
+              <span class="stack-tag">JavaScript (ES6+)</span>
+              <span class="stack-tag">SPA Architecture</span>
+              <span class="stack-tag">Responsive Design</span>
+            </div>
+          </div>
+
+          <div class="showcase-award">
+            <div class="award-box">
+              <span class="award-emoji">🏆</span>
+              <span class="award-title">우수 입상</span>
+              <span class="award-subtitle">졸업 작품 전시회</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<!-- ==========================================================
+     네비게이션 바 스크립트 (nav-component.html 원본 그대로, 수정 금지)
+     ========================================================== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const mainNav = document.getElementById('main-nav');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  /* ----------------------------------------------------------
+     1. 햄버거 메뉴 열기/닫기
+     ---------------------------------------------------------- */
+  function openMenu() {
+    mainNav.classList.add('is-open');
+    hamburgerBtn.classList.add('is-open');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    hamburgerBtn.setAttribute('aria-label', '메뉴 닫기');
+  }
+
+  function closeMenu() {
+    mainNav.classList.remove('is-open');
+    hamburgerBtn.classList.remove('is-open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    hamburgerBtn.setAttribute('aria-label', '메뉴 열기');
+  }
+
+  hamburgerBtn.addEventListener('click', () => {
+    mainNav.classList.contains('is-open') ? closeMenu() : openMenu();
+  });
+
+  navLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      if (mainNav.classList.contains('is-open')) closeMenu();
+    });
+  });
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (window.innerWidth > 768) closeMenu();
+    }, 150);
+  });
+
+  /* ----------------------------------------------------------
+     2. 현재 페이지 파일명을 기준으로 is-active 자동 부여
+        (각 페이지에서 별도 설정 없이 동작)
+     ---------------------------------------------------------- */
+  const currentFile = window.location.pathname.split('/').pop() || 'index.html';
+
+  navLinks.forEach((link) => {
+    const linkFile = link.getAttribute('href');
+    if (linkFile === currentFile) {
+      link.classList.add('is-active');
+    }
+  });
+});
+</script>
+
+<!-- 개발 역량 페이지 전용 스크립트 -->
+<script src="dev-script.js"></script>
+</body>
+</html>
