@@ -1,0 +1,212 @@
+/* ==========================================================
+   landing.html 전용 스타일
+   - :root 색상 변수는 nav-component의 <style>에서 이미 정의됨
+     (--color-bg-primary, --color-text-primary, --color-accent 등)
+   - 여기서는 기존 변수를 재사용하고, 새로 필요한 색상만
+     동일한 네이밍 규칙으로 :root에 추가함 (하드코딩 금지)
+   ========================================================== */
+
+:root {
+  /* 상태 표시(살아있음/활성) 배지에 쓰는 그린 톤 — 기존 팔레트에 없어 추가 */
+  --color-live: #34d399;
+  --color-live-dim: rgba(52, 211, 153, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Pretendard', sans-serif;
+  overflow-x: hidden;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================
+   배경 오디오 비주얼라이저 캔버스 (전체 화면 고정, 콘텐츠 뒤 레이어)
+   ========================================================== */
+.bg-visualizer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.2;
+}
+
+/* ==========================================================
+   히어로 섹션
+   ========================================================== */
+.hero-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--nav-height) + 24px) 24px 24px;
+  overflow: hidden;
+}
+
+.hero-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-dotgrid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.hero-glow {
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  margin-left: -300px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  filter: blur(140px);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero-content > * + * {
+  margin-top: 32px;
+}
+
+/* 상단 배지 */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.05);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.hero-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-live);
+  animation: hero-ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes hero-ping {
+  0% { box-shadow: 0 0 0 0 var(--color-live-dim); }
+  70% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+}
+
+/* 타이틀 */
+.hero-title {
+  margin: 0;
+  font-size: clamp(36px, 7vw, 72px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--color-text-primary);
+}
+
+.hero-title-accent {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--color-text-secondary), var(--color-text-primary) 50%, var(--color-text-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.35);
+}
+
+/* 서브 텍스트 */
+.hero-subtitle {
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: clamp(15px, 2vw, 19px);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+/* CTA 버튼 영역 */
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding-top: 8px;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px 32px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.hero-btn--primary {
+  background-color: var(--color-text-primary);
+  color: var(--color-bg-primary);
+  border: 1px solid var(--color-text-primary);
+}
+
+.hero-btn--primary:hover {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+.hero-btn--secondary {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-strong);
+}
+
+.hero-btn--secondary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+@media (min-width: 480px) {
+  .hero-actions {
+    flex-direction: row;
+  }
+
+  .hero-btn {
+    width: auto;
+  }
+}

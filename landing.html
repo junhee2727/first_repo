@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I AM | 이준희 — Landing</title>
+
+<!-- ==========================================================
+     네비게이션 바 스타일 (nav-component.html 원본 그대로, 수정 금지)
+     ========================================================== -->
+<style>
+:root {
+  --color-bg-primary: #0d0d0d;
+  --color-bg-secondary: #141414;
+  --color-bg-elevated: #1a1a1a;
+
+  --color-text-primary: #f5f5f5;
+  --color-text-secondary: #a3a3a3;
+  --color-text-muted: #6b6b6b;
+
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-strong: rgba(255, 255, 255, 0.25);
+
+  /* 뉴캐슬 스카이블루 포인트 컬러 */
+  --color-accent: #7fdbff;
+  --color-accent-dim: rgba(127, 219, 255, 0.15);
+
+  --nav-height: 76px;
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--nav-height);
+  z-index: 1000;
+  background-color: rgba(13, 13, 13, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav-container {
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: var(--color-text-primary);
+  transition: opacity var(--transition-fast);
+}
+
+.brand:hover { opacity: 0.8; }
+
+.brand-text {
+  padding: 4px 8px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 4px;
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  position: relative;
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 2px;
+  height: 2px;
+  background-color: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--transition-fast);
+}
+
+.nav-link:hover { color: var(--color-text-primary); }
+.nav-link:hover::after { transform: scaleX(1); }
+
+.nav-link.is-active { color: var(--color-accent); }
+.nav-link.is-active::after { transform: scaleX(1); }
+
+.nav-link--cta {
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-strong);
+  margin-left: 8px;
+}
+.nav-link--cta::after { display: none; }
+.nav-link--cta:hover {
+  background-color: var(--color-text-primary);
+  color: var(--color-bg-primary);
+  border-color: var(--color-text-primary);
+}
+.nav-link--cta.is-active {
+  background-color: var(--color-accent);
+  color: var(--color-bg-primary);
+  border-color: var(--color-accent);
+}
+
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hamburger-line {
+  width: 22px;
+  height: 2px;
+  background-color: var(--color-text-primary);
+  border-radius: 2px;
+  transition: transform var(--transition-medium), opacity var(--transition-medium);
+}
+
+.hamburger-btn.is-open .hamburger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger-btn.is-open .hamburger-line:nth-child(2) { opacity: 0; }
+.hamburger-btn.is-open .hamburger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 768px) {
+  .hamburger-btn { display: flex; }
+
+  .main-nav {
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    width: 100%;
+    background-color: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height var(--transition-medium);
+  }
+
+  .main-nav.is-open { max-height: 400px; }
+
+  .nav-list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px 16px 20px;
+  }
+
+  .nav-link {
+    display: block;
+    width: 100%;
+    padding: 14px 12px;
+    border-radius: 8px;
+  }
+
+  .nav-link::after { display: none; }
+  .nav-link.is-active { background-color: var(--color-accent-dim); }
+
+  .nav-link--cta { margin-left: 0; margin-top: 8px; text-align: center; }
+}
+</style>
+
+<!-- 랜딩 페이지 전용 스타일 -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ==========================================================
+     네비게이션 바 마크업 (nav-component.html 원본 그대로, 수정 금지)
+     ========================================================== -->
+<header class="site-header">
+  <div class="nav-container">
+
+    <a href="landing.html" class="brand" aria-label="I AM 홈으로 이동">
+      <span class="brand-text">I AM</span>
+    </a>
+
+    <nav class="main-nav" id="main-nav" aria-label="주요 메뉴">
+      <ul class="nav-list" id="nav-list">
+        <li><a href="football.html" class="nav-link">Football</a></li>
+        <li><a href="music.html" class="nav-link">Music Digging</a></li>
+        <li><a href="dev.html" class="nav-link">Dev Capability</a></li>
+        <li><a href="contact.html" class="nav-link nav-link--cta">Contact</a></li>
+      </ul>
+    </nav>
+
+    <button
+      type="button"
+      class="hamburger-btn"
+      id="hamburger-btn"
+      aria-label="메뉴 열기"
+      aria-expanded="false"
+      aria-controls="nav-list"
+    >
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+
+  </div>
+</header>
+
+<!-- ==========================================================
+     랜딩(히어로) 본문 — vibe_surfer_portfolio.html의 히어로 섹션 이식
+     ========================================================== -->
+<canvas id="visualizer-canvas" class="bg-visualizer" aria-hidden="true"></canvas>
+
+<main>
+  <section id="hero" class="hero-section">
+    <div class="hero-backdrop" aria-hidden="true">
+      <div class="hero-dotgrid"></div>
+      <div id="bg-glow" class="hero-glow"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span> SSAFY Wave Rider
+      </div>
+
+      <h1 class="hero-title">
+        흐름에 올라타는<br>
+        <span class="hero-title-accent">바이브 서퍼</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        트렌드의 파도 위에서 균형을 잡고 완성도 높은 결과물을 만들어냅니다.
+        SSAFY 동기 및 강사님들과 함께 파도를 타며 더 넓은 바다로 나아가고 싶은
+        개발자 이준희입니다.
+      </p>
+
+      <div class="hero-actions">
+        <a href="football.html" class="hero-btn hero-btn--primary">
+          파도 타기 시작
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+        </a>
+        <a href="contact.html" class="hero-btn hero-btn--secondary">
+          프로젝트 제안하기
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ==========================================================
+     네비게이션 바 스크립트 (nav-component.html 원본 그대로, 수정 금지)
+     ========================================================== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const mainNav = document.getElementById('main-nav');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  /* ----------------------------------------------------------
+     1. 햄버거 메뉴 열기/닫기
+     ---------------------------------------------------------- */
+  function openMenu() {
+    mainNav.classList.add('is-open');
+    hamburgerBtn.classList.add('is-open');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    hamburgerBtn.setAttribute('aria-label', '메뉴 닫기');
+  }
+
+  function closeMenu() {
+    mainNav.classList.remove('is-open');
+    hamburgerBtn.classList.remove('is-open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    hamburgerBtn.setAttribute('aria-label', '메뉴 열기');
+  }
+
+  hamburgerBtn.addEventListener('click', () => {
+    mainNav.classList.contains('is-open') ? closeMenu() : openMenu();
+  });
+
+  navLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      if (mainNav.classList.contains('is-open')) closeMenu();
+    });
+  });
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (window.innerWidth > 768) closeMenu();
+    }, 150);
+  });
+
+  /* ----------------------------------------------------------
+     2. 현재 페이지 파일명을 기준으로 is-active 자동 부여
+        (각 페이지에서 별도 설정 없이 동작)
+     ---------------------------------------------------------- */
+  const currentFile = window.location.pathname.split('/').pop() || 'landing.html';
+
+  navLinks.forEach((link) => {
+    const linkFile = link.getAttribute('href');
+    if (linkFile === currentFile) {
+      link.classList.add('is-active');
+    }
+  });
+});
+</script>
+
+<!-- 랜딩 페이지 전용 스크립트 -->
+<script src="script.js"></script>
+</body>
+</html>
