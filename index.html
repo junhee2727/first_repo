@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I AM | 이준희 — Landing</title>
+<title>I AM | 이준희</title>
 
 <!-- ==========================================================
      네비게이션 바 스타일 (nav-component.html 원본 그대로, 수정 금지)
@@ -205,7 +205,7 @@
 <header class="site-header">
   <div class="nav-container">
 
-    <a href="landing.html" class="brand" aria-label="I AM 홈으로 이동">
+    <a href="index.html" class="brand" aria-label="I AM 홈으로 이동">
       <span class="brand-text">I AM</span>
     </a>
 
@@ -325,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
      2. 현재 페이지 파일명을 기준으로 is-active 자동 부여
         (각 페이지에서 별도 설정 없이 동작)
      ---------------------------------------------------------- */
-  const currentFile = window.location.pathname.split('/').pop() || 'landing.html';
+  const currentFile = window.location.pathname.split('/').pop() || 'index.html';
 
   navLinks.forEach((link) => {
     const linkFile = link.getAttribute('href');
