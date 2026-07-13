@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Surfer | Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <!-- Pretendard 폰트 불러오기 -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: #080808;
+            color: #F3F4F6;
+            overflow-x: hidden;
+        }
+        /* 커스텀 스크롤바 스타일 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080808;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #222;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+        .text-glow {
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.45);
+        }
+        /* 바이닐 회전 애니메이션 */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin 12s linear infinite;
+        }
+        .paused {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body class="selection:bg-white selection:text-black relative">
+
+    <!-- 전역 배경 비주얼라이저 (콘텐츠 뒤 레이어에 배치) -->
+    <canvas id="visualizer-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-25"></canvas>
+
+    <!-- 상단 헤더 내비게이션 -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-black/60 backdrop-blur-md border-b border-white/5 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#hero" class="text-xl font-black tracking-widest text-white hover:opacity-80 transition-opacity">
+                VIBE <span class="bg-white text-black px-1.5 py-0.5 ml-1 rounded">SURFER</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-neutral-400">
+                <a href="#football" class="hover:text-white transition-colors">Football</a>
+                <a href="#music" class="hover:text-white transition-colors">Music Digging</a>
+                <a href="#strength" class="hover:text-white transition-colors">Dev Capability</a>
+                <a href="#contact" class="px-4 py-2 rounded-full border border-white/10 hover:border-white hover:bg-white hover:text-black transition-all text-white">Contact</a>
+            </nav>
+            <!-- 모바일 토글 메뉴 버튼 -->
+            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <!-- 모바일 드롭다운 메뉴 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-black/95 border-b border-white/10 px-6 py-4 space-y-4 relative z-50">
+            <a href="#football" class="block text-neutral-400 hover:text-white">Football</a>
+            <a href="#music" class="block text-neutral-400 hover:text-white">Music Digging</a>
+            <a href="#strength" class="block text-neutral-400 hover:text-white">Dev Capability</a>
+            <a href="#contact" class="block text-white font-bold">Contact</a>
+        </div>
+    </header>
+
+    <!-- 1. 히어로 섹션 (Hero) -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 px-6 overflow-hidden bg-transparent">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+            <div id="bg-glow" class="absolute -top-[20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-[140px] transition-all duration-700 pointer-events-none"></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto text-center space-y-8">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs text-neutral-400 tracking-wider uppercase">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> SSAFY Wave Rider
+            </div>
+            
+            <h1 class="text-4xl md:text-7xl font-black tracking-tight leading-tight text-white">
+                흐름에 올라타는<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-neutral-300 via-white to-neutral-400 text-glow">바이브 서퍼</span>
+            </h1>
+
+            <p class="text-neutral-400 text-base md:text-xl max-w-2xl mx-auto leading-relaxed">
+                트렌드의 파도 위에서 균형을 잡고, 깊고 강한 압박으로 완성도 높은 결과물을 만들어냅니다. SSAFY 동기 및 강사님들과 함께 파도를 타며 더 넓은 바다로 나아가고 싶은 개발자 이준희입니다.
+            </p>
+
+            <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#football" class="w-full sm:w-auto px-8 py-4 bg-white text-black font-semibold rounded-lg hover:bg-neutral-200 transition-colors flex items-center justify-center gap-2">
+                    파도 타기 시작 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </a>
+                <a href="#contact" class="w-full sm:w-auto px-8 py-4 border border-white/10 text-white font-semibold rounded-lg hover:bg-white/5 transition-all hover:border-white/30">
+                    프로젝트 제안하기
+                </a>
+            </div>
+        </div>
+
+        <!-- 스크롤 인디케이터 -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-neutral-500 text-xs tracking-widest uppercase">
+            <span>Scroll</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-white/60 to-transparent animate-pulse"></div>
+        </div>
+    </section>
+
+    <!-- 2. 축구 및 열정 섹션 (Football & Passion) -->
+    <section id="football" class="relative z-10 py-32 px-6 border-t border-white/5 bg-transparent">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+                
+                <!-- 왼쪽 소개 영역 -->
+                <div class="lg:col-span-5 space-y-6 lg:sticky lg:top-32">
+                    <p class="text-xs font-bold tracking-widest text-neutral-500 uppercase">01 / PASSION & FOOTBALL</p>
+                    <h2 class="text-3xl md:text-5xl font-black text-white leading-tight">
+                        서퍼가 도달한<br>뜨거운 열정의 그라운드
+                    </h2>
+                    <p class="text-neutral-400 leading-relaxed text-sm md:text-base">
+                        트렌드의 흐름을 타는 서퍼가 최종적으로 도달하는 목적지는 뜨거운 투지가 숨 쉬는 축구장입니다. 화려한 스타 스쿼드가 아닐지라도 정교한 전술과 집요한 압박으로 상대를 흔드는 뉴캐슬의 축구를 동경합니다. 그라운드에서 수혈받은 지치지 않는 파이팅 에너지는 제 개발 프로젝트와 협업 과정에도 고스란히 투영됩니다.
+                    </p>
+                    <div class="h-1 w-20 bg-white rounded"></div>
+                </div>
+
+                <!-- 오른쪽 축구 관련 카드 영역 -->
+                <div class="lg:col-span-7 space-y-8">
+                    <!-- 뉴캐슬 유나이티드 오마주 카드 -->
+                    <div id="nufc-card" class="relative group p-8 rounded-2xl bg-neutral-950/80 backdrop-blur-md border border-white/10 hover:border-white/30 hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 overflow-hidden cursor-pointer">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-all"></div>
+                        
+                        <div class="flex items-start md:items-center justify-between gap-4 mb-6">
+                            <div class="flex items-center gap-4">
+                                <div class="flex space-x-1 h-8 items-center bg-black p-1.5 rounded border border-white/10">
+                                    <div class="w-1.5 h-5 bg-white"></div>
+                                    <div class="w-1.5 h-5 bg-black border-l border-r border-white/30"></div>
+                                    <div class="w-1.5 h-5 bg-white"></div>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-neutral-400 font-mono">My Passion Club</span>
+                                    <h3 class="text-lg font-bold text-white flex items-center gap-1.5">
+                                        뉴캐슬 유나이티드 3년차 팬
+                                    </h3>
+                                </div>
+                            </div>
+                            <!-- 상호작용 클릭 배지 -->
+                            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono text-[10px] uppercase font-bold tracking-wider group-hover:bg-white group-hover:text-black transition-colors">
+                                Click Me! 📣
+                            </span>
+                        </div>
+
+                        <p class="text-neutral-300 text-sm leading-relaxed mb-6">
+                            단순한 빅클럽 추종이 아닙니다. 낮은 전력에도 불구하고, 유기적이고 헌신적인 강압 수비와 거침없는 투지로 상대를 주저앉히는 ‘파이팅’ 넘치는 전술에 매료되었습니다. 난관을 마주했을 때 꺾이지 않는 투지의 원동력이 됩니다. <br>
+                            <span class="text-xs text-neutral-500 mt-2 block">(여기를 터치하거나 클릭하여 뉴캐슬의 뜨거운 에너지를 잠재우던 함성을 깨워보세요!)</span>
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-4 border-t border-white/5 pt-6 text-xs text-neutral-400">
+                            <div>
+                                <span class="block text-neutral-500 font-mono mb-1">FAVORITE CLUB</span>
+                                <span class="text-white font-semibold">Newcastle United FC</span>
+                            </div>
+                            <div>
+                                <span class="block text-neutral-500 font-mono mb-1">MEMBER SINCE</span>
+                                <span class="text-white font-semibold">2023 ~ Present</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 에이스 브루누 기마랑이스 헌정 카드 -->
+                    <div class="p-8 rounded-2xl bg-gradient-to-br from-black/90 to-neutral-950/95 backdrop-blur-md border border-white/10 hover:border-white/30 transition-all">
+                        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                            <div class="space-y-3">
+                                <div class="inline-block px-2.5 py-0.5 rounded bg-white text-black text-xs font-bold font-mono">NO. 39</div>
+                                <h4 class="text-2xl font-black text-white">브루누 기마랑이스 <span class="text-sm font-normal text-neutral-400">(Bruno Guimarães)</span></h4>
+                                <p class="text-neutral-300 text-sm leading-relaxed max-w-md">
+                                    지치지 않는 체력과 환상적인 조율 능력으로 중원을 장악하는 에이스. 그의 팬이 된 해, 팀의 <span class="text-white font-bold underline decoration-white/40">카라바오컵 준우승</span>까지 모든 순간의 영광과 전율을 함께했습니다.
+                                </p>
+                            </div>
+                            <!-- 유니폼 아이콘 시뮬레이션 -->
+                            <div class="w-24 h-28 relative flex-shrink-0 bg-neutral-950 border border-white/20 rounded-lg overflow-hidden flex flex-col justify-between p-2 shadow-inner">
+                                <div class="w-full flex justify-around">
+                                    <div class="w-3 h-12 bg-white"></div>
+                                    <div class="w-3 h-12 bg-black border-l border-r border-white/30"></div>
+                                    <div class="w-3 h-12 bg-white"></div>
+                                </div>
+                                <div class="text-center">
+                                    <span class="block text-[10px] text-neutral-400 font-mono">BRUNO</span>
+                                    <span class="block text-lg font-black text-white leading-none">39</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 음악 디깅 섹션 (Music Digging) -->
+    <section id="music" class="relative z-10 py-32 px-6 border-t border-white/5 bg-transparent">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                
+                <!-- 왼쪽 바이닐 플레이어 영역 -->
+                <div class="lg:col-span-6 flex justify-center order-2 lg:order-1">
+                    <div class="relative w-80 h-80 bg-neutral-900/90 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-2xl flex flex-col justify-between overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-black/50 to-white/5 pointer-events-none"></div>
+                        
+                        <div class="flex items-center justify-between z-10">
+                            <span class="text-xs font-mono text-neutral-400">NOW DIGGING</span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+                        </div>
+
+                        <!-- 회전하는 바이닐 레코드 -->
+                        <div class="relative w-44 h-44 mx-auto my-4 flex items-center justify-center z-10">
+                            <div id="vinyl" class="absolute inset-0 rounded-full bg-neutral-950 border-4 border-neutral-800 shadow-xl flex items-center justify-center animate-spin-slow paused" style="background: radial-gradient(circle, #262626 2px, #000 3px, #000 40%, #171717 41%, #171717 60%, #000 61%, #000 100%);">
+                                <div class="absolute inset-2 rounded-full border border-neutral-900/40"></div>
+                                <div class="absolute inset-6 rounded-full border border-neutral-900/30"></div>
+                                <div class="absolute inset-10 rounded-full border border-neutral-900/20"></div>
+                                <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-black font-black text-[9px] text-center p-1 uppercase tracking-tight select-none">
+                                    VIBE SURFER
+                                </div>
+                            </div>
+                            <!-- 톤암 (턴테이블 바늘) -->
+                            <div id="tonearm" class="absolute -top-3 -right-3 w-16 h-24 origin-top-left transform rotate-[15deg] transition-transform duration-500 pointer-events-none z-20">
+                                <svg class="w-full h-full text-neutral-400" viewBox="0 0 100 150" fill="none">
+                                    <path d="M10,10 L40,10 L60,80 L55,100" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                                    <rect x="48" y="98" width="14" height="20" rx="2" fill="#E5E7EB" transform="rotate(-10 55 100)"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="z-10 flex items-end justify-between">
+                            <div class="space-y-1">
+                                <h4 class="text-sm font-bold text-white tracking-wide">Brain Rot & House K-Pop</h4>
+                                <p class="text-xs text-neutral-400">Curated Rhythm Wave</p>
+                            </div>
+                            <button id="vinyl-toggle" class="p-3 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors focus:outline-none">
+                                <svg id="play-icon" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                <svg id="pause-icon" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 오른쪽 음악 취향 본문 영역 -->
+                <div class="lg:col-span-6 space-y-6 order-1 lg:order-2">
+                    <p class="text-xs font-bold tracking-widest text-neutral-500 uppercase">02 / MUSIC & PREFERENCE</p>
+                    <h2 class="text-3xl md:text-5xl font-black text-white leading-tight">
+                        장르의 한계 없이,<br>본능적으로 디깅하는 리스너
+                    </h2>
+                    <p class="text-neutral-400 leading-relaxed text-sm md:text-base">
+                        특정 장르에 스스로를 가두지 않습니다. 중독성 강한 가사와 미니멀한 비트의 <strong class="text-white font-medium">"Brain rot"</strong> 트렌디한 밈송으로 귀를 트고, 그 이면에 흐르는 묵직한 하우스풍 K-POP에 빠져들어 직접 하우스 음악의 역사와 세부 서브 장르까지 딥 다이브(Deep-dive)합니다. 
+                    </p>
+                    <blockquote class="pl-4 border-l-2 border-white text-neutral-300 italic text-sm">
+                        "익숙하지 않은 파도라도 매력적이라면 기꺼이 뛰어듭니다. 호기심을 지적 깊이로 확장해 나가는 것이 저의 디깅 스타일입니다."
+                    </blockquote>
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <span class="px-3 py-1 bg-neutral-900 border border-white/10 rounded-full text-xs text-neutral-300">#BrainRot</span>
+                        <span class="px-3 py-1 bg-neutral-900 border border-white/10 rounded-full text-xs text-neutral-300">#DeepHouse</span>
+                        <span class="px-3 py-1 bg-neutral-900 border border-white/10 rounded-full text-xs text-neutral-300">#KPopDigging</span>
+                        <span class="px-3 py-1 bg-neutral-900 border border-white/10 rounded-full text-xs text-neutral-300">#VibeSurfing</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 강점 및 역량 섹션 (Strengths & Dev Capability) -->
+    <section id="strength" class="relative z-10 py-32 px-6 border-t border-white/5 bg-transparent">
+        <div class="max-w-6xl mx-auto space-y-20">
+            
+            <div class="max-w-3xl space-y-4">
+                <p class="text-xs font-bold tracking-widest text-neutral-500 uppercase">03 / CAPABILITY & STRENGTHS</p>
+                <h2 class="text-3xl md:text-5xl font-black text-white leading-tight">
+                    리액트 입문과 동시에 입상,<br>폭발적인 학습과 적용력
+                </h2>
+                <p class="text-neutral-400 text-sm md:text-base">
+                    단순히 지식을 암기하는 것에 머무르지 않고 목적 중심의 빠른 응용과 설계 능력을 추구합니다. 졸업 작품 제작 과정에서 React를 처음 맞닥뜨렸지만, 탄탄한 웹 기초 체력과 기획 해석력으로 단기간에 완성도 높은 프로덕트를 개발해 입상까지 완수했습니다.
+                </p>
+            </div>
+
+            <!-- 핵심 역량 카드 리스트 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- 카드 1 -->
+                <div class="p-8 rounded-2xl bg-neutral-950/80 backdrop-blur-md border border-white/5 hover:border-white/20 transition-all space-y-4">
+                    <div class="w-12 h-12 rounded-lg bg-white text-black flex items-center justify-center font-black text-xl">
+                        01
+                    </div>
+                    <h3 class="text-lg font-bold text-white">압도적인 러닝 커브 (React)</h3>
+                    <p class="text-neutral-400 text-sm leading-relaxed">
+                        공식 문서 기반의 깊이 있는 학습법과 트러블슈팅 습관으로, 리액트 핵심 아키텍처(Hooks, State Flow)를 단시간 내에 흡수하고 실전에 성공적으로 녹였습니다.
+                    </p>
+                </div>
+                <!-- 카드 2 -->
+                <div class="p-8 rounded-2xl bg-neutral-950/80 backdrop-blur-md border border-white/5 hover:border-white/20 transition-all space-y-4">
+                    <div class="w-12 h-12 rounded-lg bg-white text-black flex items-center justify-center font-black text-xl">
+                        02
+                    </div>
+                    <h3 class="text-lg font-bold text-white">트렌드를 읽는 디깅력</h3>
+                    <p class="text-neutral-400 text-sm leading-relaxed">
+                        음악 취향 탐색에서 입증된 집요함으로 오픈소스 동향과 최신 기술 블로그를 분석하고, 실무에 가장 효율적인 도구와 구조를 선택하고 제안합니다.
+                    </p>
+                </div>
+                <!-- 카드 3 -->
+                <div class="p-8 rounded-2xl bg-neutral-950/80 backdrop-blur-md border border-white/5 hover:border-white/20 transition-all space-y-4">
+                    <div class="w-12 h-12 rounded-lg bg-white text-black flex items-center justify-center font-black text-xl">
+                        03
+                    </div>
+                    <h3 class="text-lg font-bold text-white">투지 있는 빌드업과 압박</h3>
+                    <p class="text-neutral-400 text-sm leading-relaxed">
+                        뉴캐슬 유나이티드처럼, 한정된 자원과 시간 속에서도 타협 없는 높은 완성도와 철저한 디버깅을 실행해 안정적이고 고성능의 코드를 만들어냅니다.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 졸업 작품 입상 쇼케이스 카드 -->
+            <div class="p-8 md:p-12 rounded-3xl bg-gradient-to-r from-neutral-950 via-black to-neutral-950 border border-white/10 relative overflow-hidden">
+                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-8 space-y-6">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-xs text-white rounded-full font-mono font-bold">
+                            🏆 GRADUATION WORK AWARD
+                        </div>
+                        <h3 class="text-2xl md:text-4xl font-black text-white">졸업 작품 리액트 개발 및 입상</h3>
+                        <p class="text-neutral-300 text-sm md:text-base leading-relaxed">
+                            "프로젝트의 성공을 위해 낯선 파도에 과감하게 올라탔습니다." 기획 단계에서 필요성이 대두된 단일 페이지 애플리케이션(SPA) 아키텍처를 구현하기 위해 React를 주도적으로 도입, 독학하여 성공적으로 프로젝트를 리딩하고 우수한 성과로 입상하는 쾌거를 이루었습니다.
+                        </p>
+                        <div class="flex flex-wrap gap-2.5">
+                            <span class="text-xs bg-white text-black px-2.5 py-1 rounded font-mono font-bold">React.js</span>
+                            <span class="text-xs bg-neutral-800 text-neutral-300 px-2.5 py-1 rounded font-mono">JavaScript (ES6+)</span>
+                            <span class="text-xs bg-neutral-800 text-neutral-300 px-2.5 py-1 rounded font-mono">SPA Architecture</span>
+                            <span class="text-xs bg-neutral-800 text-neutral-300 px-2.5 py-1 rounded font-mono">Responsive Design</span>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-4 flex justify-center lg:justify-end">
+                        <div class="text-center p-6 bg-white/5 rounded-2xl border border-white/10 w-48 backdrop-blur-md">
+                            <span class="text-4xl block mb-2">🏆</span>
+                            <span class="block text-xl font-extrabold text-white">우수 입상</span>
+                            <span class="block text-xs text-neutral-500 mt-1">졸업 작품 전시회</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 5. 상호작용 제안 섹션 (CTA) -->
+    <section class="relative z-10 py-24 px-6 bg-transparent border-t border-white/5 text-center overflow-hidden">
+        <div class="max-w-4xl mx-auto space-y-6 relative z-10">
+            <h2 class="text-3xl md:text-5xl font-black text-white">새로운 흐름을 함께 만들 준비가 되셨나요?</h2>
+            <p class="text-neutral-400 text-sm md:text-base max-w-xl mx-auto">
+                SSAFY에서의 새로운 프로젝트, 스터디, 또는 기분 좋은 커피챗 제안까지 언제든 환영합니다. 함께 더 높은 파도를 향해 나아갑시다.
+            </p>
+            <div class="pt-4">
+                <a href="#contact" class="inline-block px-8 py-4 bg-white text-black font-extrabold rounded-lg hover:bg-neutral-200 transition-all shadow-lg hover:shadow-white/10">
+                    지금 메시지 보내기
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. 연락처 및 푸터 섹션 (Contact & Footer) -->
+    <section id="contact" class="relative z-10 py-32 px-6 border-t border-white/5 bg-transparent">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                
+                <!-- 왼쪽 연락처 요약 카드 -->
+                <div class="lg:col-span-5 space-y-8">
+                    <div class="space-y-4">
+                        <p class="text-xs font-bold tracking-widest text-neutral-500 uppercase">04 / CONTACT</p>
+                        <h2 class="text-3xl md:text-4xl font-black text-white">언제든 물살을 타고 연락해 주세요.</h2>
+                        <p class="text-neutral-400 text-sm leading-relaxed">
+                            SSAFY 동기분들, 강사님들의 아낌없는 피드백과 소중한 인연을 기다립니다. 아래 이메일 복사 혹은 메시지 폼을 이용해 편하게 연락해 주세요.
+                        </p>
+                    </div>
+
+                    <!-- 이메일 클립보드 복사 카드 -->
+                    <div class="p-6 rounded-xl bg-neutral-900/60 backdrop-blur-md border border-white/5 flex items-center justify-between gap-4">
+                        <div class="overflow-hidden">
+                            <span class="block text-[10px] text-neutral-500 font-mono tracking-wider">OFFICIAL EMAIL</span>
+                            <span id="email-text" class="text-white font-mono font-bold text-sm md:text-base truncate">geta221@naver.com</span>
+                        </div>
+                        <button id="copy-btn" class="flex-shrink-0 px-4 py-2 bg-white text-black text-xs font-bold rounded hover:bg-neutral-200 transition-colors">
+                            Copy
+                        </button>
+                    </div>
+
+                    <div id="copy-toast" class="hidden text-emerald-400 text-xs font-medium pl-2">
+                        ✓ 이메일 주소가 클립보드에 복사되었습니다!
+                    </div>
+                </div>
+
+                <!-- 오른쪽 메시지 폼 -->
+                <div class="lg:col-span-7">
+                    <form id="contact-form" class="space-y-6 bg-neutral-900/40 backdrop-blur-md p-8 rounded-2xl border border-white/5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label for="name" class="block text-xs font-bold text-neutral-400 font-mono uppercase">성함 / 소속 (Name)</label>
+                                <input type="text" id="name" required class="w-full bg-neutral-950 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-white transition-colors" placeholder="SSAFY 11기 홍길동">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="email" class="block text-xs font-bold text-neutral-400 font-mono uppercase">답장받을 이메일 (Email)</label>
+                                <input type="email" id="email" required class="w-full bg-neutral-950 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-white transition-colors" placeholder="gildong@example.com">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="message" class="block text-xs font-bold text-neutral-400 font-mono uppercase">메시지 (Message)</label>
+                            <textarea id="message" rows="5" required class="w-full bg-neutral-950 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-white transition-colors" placeholder="함께 나누고 싶은 재미있는 프로젝트나 커피챗 제안을 자유롭게 남겨주세요!"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 bg-white text-black font-extrabold rounded-lg hover:bg-neutral-200 transition-colors text-sm uppercase tracking-wider">
+                            Send Wave Message
+                        </button>
+                    </form>
+                    <div id="form-success" class="hidden mt-4 p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm">
+                        🎉 메시지가 전송되었습니다! 기획해주신 감성을 따라 빠르게 답변드릴게요.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 하단 카피라이트 -->
+            <div class="mt-32 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-neutral-500 font-mono">
+                <div>
+                    &copy; 2026 Vibe Surfer. Dedicated to NUFC & Creative Dev Waves.
+                </div>
+                <div class="flex items-center gap-6">
+                    <span>Designed with Passion</span>
+                    <span>Powered by Vanilla Stack</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 바닐라 자바스크립트 비즈니스 로직 -->
+    <script>
+        // --- 1. 마우스 위치 반응형 백그라운드 글로우 이펙트 ---
+        const bgGlow = document.getElementById('bg-glow');
+        const heroSection = document.getElementById('hero');
+
+        heroSection.addEventListener('mousemove', (e) => {
+            const rect = heroSection.getBoundingClientRect();
+            const x = e.clientX - rect.left - 300;
+            const y = e.clientY - rect.top - 300;
+            bgGlow.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        // --- 2. 모바일 내비게이션 드롭다운 & 부드러운 스크롤 제어 ---
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // 부드러운 앵커 스크롤 컨트롤러 (헤더 80px 겹침 차단 오프셋 계산 반영)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerHeight = 80;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // --- 3. 대칭형 글로벌 오디오 비주얼라이저 캔버스 (중앙에서 위아래로 신장) ---
+        const visualizerCanvas = document.getElementById('visualizer-canvas');
+        const ctx = visualizerCanvas.getContext('2d');
+        
+        let isPlaying = false;
+        let burstEnergy = 0; // 경기장 함성 소리가 울릴 때 순간 확장 강도를 제어하는 변수
+        const numBars = 80;  // 촘촘한 고해상도 연출을 위한 바 개수
+        let bars = [];
+
+        function resizeCanvas() {
+            visualizerCanvas.width = window.innerWidth;
+            visualizerCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // 파동 바 오브젝트 인스턴스 배열 초기화
+        for (let i = 0; i < numBars; i++) {
+            bars.push({
+                currentHeight: 0,
+                targetHeight: 0,
+                phase: Math.random() * Math.PI * 2
+            });
+        }
+
+        // 비주얼라이저 루프 드로잉
+        function renderVisualizer() {
+            ctx.clearRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
+            
+            const barWidth = visualizerCanvas.width / numBars;
+            const centerY = visualizerCanvas.height / 2;
+            const maxBarHeight = visualizerCanvas.height * 0.48; // 최대 파형 높이 제한
+
+            // 메탈릭하고 시크한 글로우 그라데이션 브러시 생성
+            const grad = ctx.createLinearGradient(0, centerY - maxBarHeight / 2, 0, centerY + maxBarHeight / 2);
+            grad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+            grad.addColorStop(0.3, 'rgba(255, 255, 255, 0.4)');
+            grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.85)'); // 수평 중앙 굴절축 광도 강조
+            grad.addColorStop(0.7, 'rgba(255, 255, 255, 0.4)');
+            grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+            ctx.fillStyle = grad;
+
+            const time = Date.now() * 0.003;
+
+            // 함성 폭발 이후 서서히 원래 흐름으로 복귀 (진폭 감쇠 연산)
+            if (burstEnergy > 0) {
+                burstEnergy *= 0.94;
+                if (burstEnergy < 0.01) burstEnergy = 0;
+            }
+
+            for (let i = 0; i < numBars; i++) {
+                const bar = bars[i];
+                
+                // 가우시안 종형 곡선 배율 적용 (중앙 수평축을 시각적으로 집중되도록 양 끝단을 가늘게 수렴)
+                const distFromCenter = Math.abs(i - numBars / 2) / (numBars / 2);
+                const bellMultiplier = Math.exp(-3.5 * distFromCenter * distFromCenter);
+
+                if (isPlaying) {
+                    // 음악 재생 시 다이내믹하게 춤추는 파형 (복합 사인파 합성)
+                    const primaryWave = Math.sin(i * 0.18 + time * 1.5) * 0.4 + 0.5;
+                    const rapidTurbulence = Math.cos(i * 0.35 - time * 2.8) * 0.25;
+                    const highFreqSpike = Math.sin(i * 0.7 + time * 4) * 0.15;
+                    
+                    const compositeWave = (primaryWave + rapidTurbulence + highFreqSpike + 0.3) * maxBarHeight;
+                    bar.targetHeight = Math.max(12, compositeWave * bellMultiplier);
+                } else {
+                    // 미소 음악 정지 상태의 잔잔한 엠비언트 파동 상태
+                    const calmRipple = (Math.sin(i * 0.15 + time * 0.5) * 0.2 + 0.3) * (maxBarHeight * 0.18);
+                    bar.targetHeight = Math.max(4, calmRipple * bellMultiplier);
+                }
+
+                // 뉴캐슬 클릭 시 폭풍처럼 폭발하는 에너지 주입
+                if (burstEnergy > 0) {
+                    const shockWave = Math.sin(i * 0.25 - time * 8) * (maxBarHeight * 0.95);
+                    const heavyStatic = (Math.random() * 0.3 + 0.7) * (maxBarHeight * 0.7);
+                    bar.targetHeight += Math.abs(shockWave + heavyStatic) * burstEnergy * bellMultiplier;
+                }
+
+                // 선형 보간 감속 처리 (자연스러운 떨림 유연화)
+                bar.currentHeight += (bar.targetHeight - bar.currentHeight) * 0.12;
+
+                const x = i * barWidth;
+                const height = bar.currentHeight;
+                const y = centerY - height / 2; // 중심선을 기점으로 위아래 정비율 배정
+                const width = barWidth - 4; // 바 사이의 여백
+
+                if (width > 0 && height > 1) {
+                    ctx.beginPath();
+                    if (ctx.roundRect) {
+                        ctx.roundRect(x + 2, y, width, height, 4);
+                    } else {
+                        ctx.rect(x + 2, y, width, height);
+                    }
+                    ctx.fill();
+                }
+            }
+
+            requestAnimationFrame(renderVisualizer);
+        }
+
+        // 비주얼라이저 즉시 구동
+        renderVisualizer();
+
+        // --- 4. 바이닐 턴테이블 동작 및 상태 동기화 ---
+        const vinyl = document.getElementById('vinyl');
+        const tonearm = document.getElementById('tonearm');
+        const toggleBtn = document.getElementById('vinyl-toggle');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+
+        toggleBtn.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                // 재생 활성화
+                vinyl.classList.remove('paused');
+                tonearm.style.transform = 'rotate(27deg)'; // 톤암 이동
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+            } else {
+                // 재생 일시 정지
+                vinyl.classList.add('paused');
+                tonearm.style.transform = 'rotate(15deg)'; // 톤암 회수
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+            }
+        });
+
+        // --- 5. 축구 팬 카드 클릭 시 작동하는 가상 경기장 삼총사 합성 오디오 로직 ("와!!!") ---
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function triggerVisualizerBurst() {
+            burstEnergy = 1.0; // 비주얼라이저 에너지 최고치 완충
+            bars.forEach(bar => {
+                bar.currentHeight = Math.random() * window.innerHeight * 0.6 + 100;
+            });
+        }
+
+        function playStadiumCheer() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+
+                // 스타디움 관중의 웅장한 공기 밀도감을 시뮬레이션하기 위한 백색 소음(White Noise) 버퍼 생성
+                const bufferSize = ctx.sampleRate * 1.5;
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                // 인간 성대 주파수 대역으로 가두기 위해 밴드패스(Bandpass) 필터 설정
+                const bandpass = ctx.createBiquadFilter();
+                bandpass.type = 'bandpass';
+                bandpass.frequency.setValueAtTime(800, now);
+                // 역동적인 고함 질주 효과를 위해 주파수를 급격히 올렸다가 정정시킴 (와아!)
+                bandpass.frequency.exponentialRampToValueAtTime(1600, now + 0.2);
+                bandpass.frequency.exponentialRampToValueAtTime(500, now + 0.9);
+                bandpass.Q.setValueAtTime(1.8, now);
+
+                const noiseGain = ctx.createGain();
+                noiseGain.gain.setValueAtTime(0, now);
+                noiseGain.gain.linearRampToValueAtTime(0.4, now + 0.1); // 날카롭고 폭발적인 어택 반응
+                noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 1.4); // 자연스러운 릴리즈 감소
+
+                noise.connect(bandpass);
+                bandpass.connect(noiseGain);
+                noiseGain.connect(ctx.destination);
+
+                // 남성들의 저음 화음 배음을 더하기 위해 오실레이터 추가 이식
+                const osc1 = ctx.createOscillator();
+                const osc2 = ctx.createOscillator();
+                const oscGain = ctx.createGain();
+
+                osc1.type = 'sawtooth';
+                osc1.frequency.setValueAtTime(110, now);
+                osc1.frequency.exponentialRampToValueAtTime(220, now + 0.2);
+                osc1.frequency.exponentialRampToValueAtTime(95, now + 0.8);
+
+                osc2.type = 'triangle';
+                osc2.frequency.setValueAtTime(165, now);
+                osc2.frequency.exponentialRampToValueAtTime(330, now + 0.2);
+                osc2.frequency.exponentialRampToValueAtTime(130, now + 0.8);
+
+                const vocalFilter = ctx.createBiquadFilter();
+                vocalFilter.type = 'lowpass';
+                vocalFilter.frequency.setValueAtTime(650, now);
+
+                oscGain.gain.setValueAtTime(0, now);
+                oscGain.gain.linearRampToValueAtTime(0.28, now + 0.15);
+                oscGain.gain.exponentialRampToValueAtTime(0.01, now + 1.0);
+
+                osc1.connect(vocalFilter);
+                osc2.connect(vocalFilter);
+                vocalFilter.connect(oscGain);
+                oscGain.connect(ctx.destination);
+
+                // 사운드 트리거 작동 및 종료 스케줄링
+                noise.start(now);
+                osc1.start(now);
+                osc2.start(now);
+
+                noise.stop(now + 1.5);
+                osc1.stop(now + 1.5);
+                osc2.stop(now + 1.5);
+
+            } catch (err) {
+                console.warn('이 브라우저에서는 Web Audio API가 차단되었거나 작동을 지원하지 않습니다: ', err);
+            }
+
+            // 시각 비주얼라이저의 거대한 파도를 곧바로 동시 폭발시킵니다.
+            triggerVisualizerBurst();
+        }
+
+        // 클릭 혹은 터치 시 해당 좌표에서 공중으로 떠오르는 텍스트 파티클 그래픽스 구현 ("와!!!")
+        function createFloatingText(e) {
+            const container = document.body;
+            const text = document.createElement('div');
+            
+            const cheerPhrases = ['와!!! 📣⚽️🔥', 'HOWAY THE LADS! 🦓', '골!!! ⚽️🏁', '뉴캐슬!!! 📣🏁'];
+            const randomPhrase = cheerPhrases[Math.floor(Math.random() * cheerPhrases.length)];
+            
+            text.innerText = randomPhrase;
+            text.className = 'fixed text-white font-black text-2xl md:text-4xl pointer-events-none z-50 transition-all duration-[1200ms] ease-out select-none';
+            
+            const x = e.clientX || e.touches?.[0]?.clientX || window.innerWidth / 2;
+            const y = e.clientY || e.touches?.[0]?.clientY || window.innerHeight / 2;
+            
+            text.style.left = `${x}px`;
+            text.style.top = `${y}px`;
+            text.style.transform = 'translate(-50%, -50%) scale(0.6)';
+            text.style.opacity = '1';
+            text.style.textShadow = '0 0 15px rgba(255, 255, 255, 0.9), 0 0 30px rgba(0,0,0,0.8)';
+            
+            container.appendChild(text);
+            
+            // 렌더링 리페인트 루프에서 위치 연산
+            requestAnimationFrame(() => {
+                text.style.top = `${y - 180}px`;
+                text.style.opacity = '0';
+                text.style.transform = 'translate(-50%, -50%) scale(1.4) rotate(' + (Math.random() * 40 - 20) + 'deg)';
+            });
+            
+            setTimeout(() => {
+                text.remove();
+            }, 1200);
+        }
+
+        // 축구 카드 인터랙티브 이벤트 바인딩
+        const nufcCard = document.getElementById('nufc-card');
+        nufcCard.addEventListener('click', (e) => {
+            playStadiumCheer();
+            createFloatingText(e);
+        });
+
+        nufcCard.addEventListener('touchstart', (e) => {
+            if (e.cancelable) {
+                playStadiumCheer();
+                createFloatingText(e);
+            }
+        }, { passive: true });
+
+
+        // --- 6. 이메일 주소 클립보드 복사 로직 ---
+        const copyBtn = document.getElementById('copy-btn');
+        const emailText = document.getElementById('email-text').innerText;
+        const copyToast = document.getElementById('copy-toast');
+
+        copyBtn.addEventListener('click', () => {
+            const tempInput = document.createElement('input');
+            tempInput.value = emailText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            copyToast.classList.remove('hidden');
+            copyBtn.innerText = 'Copied!';
+            
+            setTimeout(() => {
+                copyToast.classList.add('hidden');
+                copyBtn.innerText = 'Copy';
+            }, 3000);
+        });
+
+        // --- 7. 메시지 수신 폼 발송 시뮬레이터 ---
+        const contactForm = document.getElementById('contact-form');
+        const formSuccess = document.getElementById('form-success');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            formSuccess.classList.remove('hidden');
+            contactForm.reset();
+
+            setTimeout(() => {
+                formSuccess.classList.add('hidden');
+            }, 6000);
+        });
+    </script>
+</body>
+</html>
